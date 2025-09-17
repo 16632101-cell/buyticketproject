@@ -31,4 +31,14 @@
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
     </php>
+    <coverage>
+    <report>
+        <!-- export รายงาน coverage เป็น HTML -->
+        <html outputDirectory="storage/logs/coverage" lowUpperBound="50" highLowerBound="90"/>
+        <!-- export รายงาน coverage เป็น XML -->
+        <xml outputDirectory="storage/logs/coverage-xml"/>
+        <!-- export รายงาน coverage เป็น Clover (ใช้กับ CI/CD ได้) -->
+        <clover outputFile="storage/logs/clover.xml"/>
+    </report>
+</coverage>
 </phpunit>

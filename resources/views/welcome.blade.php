@@ -1,4 +1,4 @@
-<?php?>
+<?php ?>
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -37,14 +37,29 @@
             color: #333;
             font-weight: bold;
         }
-        .login-btn {
+        .user-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .user-info {
             background-color: red;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .logout-btn {
+            background-color: #555;
             color: white;
             padding: 8px 14px;
             border: none;
             border-radius: 4px;
-            font-weight: bold;
             cursor: pointer;
+            font-weight: bold;
+        }
+        .logout-btn:hover {
+            background-color: #333;
         }
         .banner {
             background-color: #900;
@@ -74,17 +89,28 @@
             <li><a href="#">โปรโมชั่น</a></li>
         </ul>
     </nav>
-    <a href="/login" class="login-btn">เข้าสู่ระบบ</a>
+
+    @if(session()->has('user'))
+        <div style="display:flex;align-items:center;gap:10px;">
+            <span>👤 {{ session('user.name') }}</span>
+            <form action="{{ route('logout') }}" method="GET">
+                <button type="submit" class="login-btn">ออกจากระบบ</button>
+            </form>
+        </div>
+    @else
+        <a href="/login" class="login-btn">เข้าสู่ระบบ</a>
+    @endif
 </header>
 
+
 <section class="banner">
-    <h1>เวอร์ชั่นทดสอบ*</h1>
+    <h1>*เวอร์ชั่นทดสอบ*</h1>
     <p>เวอร์ชั่นทดสอบ</p>
     <p>เวอร์ชั่นทดสอบ</p>
 </section>
 
 <div style="text-align: center;">
-    <img src="https://media1.tenor.com/m/TKaLVjpWD8IAAAAd/miyabi-hoshimi-miyabi.gif" alt="รูปภาพ" width="80%">
+    <img src="https://media1.tenor.com/m/TKaLVjpWD8IAAAAd/miyabi-hoshimi-miyabi.gif" alt="รูปภาพ" width="30%">
 </div>
 
 </body>
