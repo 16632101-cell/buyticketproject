@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -15,20 +13,34 @@ class AuthController extends Controller
         return view('register');
     }
 
-    // สมัครสมาชิก
+    // สมัครสมาชิก (เก็บใน session)
     public function register(Request $request)
     {
         $request->validate([
             'name'     => 'required|string|max:255',
-            'email'    => 'required|string|email|max:255|unique:users',
+            'email'    => 'required|string|email|max:255',
             'password' => 'required|string|min:6',
         ]);
 
-        User::create([
+        // ดึง users ที่เก็บใน session (ถ้ามี)
+        $users = Session::get('users', []);
+
+        // เช็คว่า email ถูกใช้ไปแล้วหรือยัง
+        foreach ($users as $u) {
+            if ($u['email'] === $request->email) {
+                return back()->with('error', 'อีเมลนี้ถูกใช้ไปแล้ว');
+            }
+        }
+
+        // เพิ่ม user ใหม่ลงไป
+        $users[] = [
             'name'     => $request->name,
             'email'    => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+            'password' => $request->password, // ⚠️ plain text (ตัวอย่าง) ถ้าจะปลอดภัยใช้ Hash::make()
+        ];
+
+        // บันทึกกลับไปใน session
+        Session::put('users', $users);
 
         return redirect()->route('login')->with('success', 'สมัครสมาชิกสำเร็จ! กรุณาเข้าสู่ระบบ');
     }
@@ -47,16 +59,17 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $users = Session::get('users', []);
 
-        if ($user && Hash::check($request->password, $user->password)) {
-            // เก็บ user ไว้ใน session
-            Session::put('user', $user);
-
-            return redirect()->route('welcome')->with('success', 'เข้าสู่ระบบสำเร็จ!');
+        foreach ($users as $user) {
+            if ($user['email'] === $request->email && $user['password'] === $request->password) {
+                // เก็บ user ลง session
+                Session::put('user', $user);
+                return redirect()->route('welcome')->with('success', 'เข้าสู่ระบบสำเร็จ!');
+            }
         }
 
-        return back()->with('error', 'อีเมลหรือรหัสผ่านไม่ถูกต้อง หรือไม่มีสมาชิกในระบบ');
+        return back()->with('error', 'อีเมลหรือรหัสผ่านไม่ถูกต้อง');
     }
 
     // ออกจากระบบ
