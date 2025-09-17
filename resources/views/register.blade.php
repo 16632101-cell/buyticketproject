@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>สมัครสมาชิก</title>
     <style>
         body {
@@ -18,6 +17,7 @@
             padding: 15px 20px;
             font-size: 20px;
             font-weight: bold;
+            text-align: center;
         }
         .container {
             max-width: 400px;
@@ -32,12 +32,6 @@
             margin-bottom: 20px;
             color: #c00;
         }
-        label {
-            display: block;
-            margin-bottom: 5%;
-            font-weight: bold;
-        }
-        input[type=text],
         input[type=text],
         input[type=email],
         input[type=password] {
@@ -78,15 +72,30 @@
 
 <div class="container">
     <h2>สมัครสมาชิก</h2>
+
+    {{-- แสดง error หรือ success --}}
+    @if(session('error'))
+        <div style="color:red; text-align:center; margin-bottom:10px;">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if(session('success'))
+        <div style="color:green; text-align:center; margin-bottom:10px;">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <form action="{{ route('register.submit') }}" method="POST">
-    @csrf
-    <input type="text" name="name" placeholder="ชื่อ" required>
-    <input type="email" name="email" placeholder="อีเมล" required>
-    <input type="password" name="password" placeholder="รหัสผ่าน" required>
-    <button type="submit">สมัครสมาชิก</button>
-</form>
+        @csrf
+        <input type="text" name="name" placeholder="ชื่อ" required>
+        <input type="email" name="email" placeholder="อีเมล" required>
+        <input type="password" name="password" placeholder="รหัสผ่าน" required>
+        <button type="submit">สมัครสมาชิก</button>
+    </form>
+
     <div class="login-link">
-        มีบัญชีแล้ว? <a href="/login">เข้าสู่ระบบ</a>
+        มีบัญชีแล้ว? <a href="{{ route('login') }}">เข้าสู่ระบบ</a>
     </div>
 </div>
 
