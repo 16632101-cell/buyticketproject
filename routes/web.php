@@ -28,3 +28,8 @@ Route::get('/dashboard', function () {
         'user' => session('user')
     ]);
 })->name('dashboard');
+
+// ✅ Show Page (เพิ่มตรงนี้)
+Route::get('/show', function () {
+    return view('show'); // ไฟล์ resources/views/show.blade.php
+})->name('show');
