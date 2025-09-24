@@ -87,7 +87,7 @@
     <div class="logo">Buyticket</div>
     <nav>
         <ul>
-            <li><a href="#">หน้าแรก</a></li>
+            <li><a href="{{ route('welcome') }}">หน้าแรก</a></li>
             <li><a href="{{ route('show') }}">ทุกงานแสดง</a></li>
             <li><a href="#">สินค้าที่ระลึก</a></li>
             <li><a href="#">วาไรตี้</a></li>

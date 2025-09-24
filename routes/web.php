@@ -33,3 +33,7 @@ Route::get('/dashboard', function () {
 Route::get('/show', function () {
     return view('show'); // ไฟล์ resources/views/show.blade.php
 })->name('show');
+
+Route::get('/welcome', function () {
+    return view('welcome'); // ไฟล์ resources/views/show.blade.php
+})->name('welcome');
